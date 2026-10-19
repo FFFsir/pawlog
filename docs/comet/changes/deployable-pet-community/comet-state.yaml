@@ -1,0 +1,98 @@
+schema: comet.native.v4
+name: deployable-pet-community
+language: zh-CN
+phase: build
+status: active
+state_version: 5
+brief: brief.md
+shape_confirmation_hash: a89ea1559bb721c5746bfe37662881c3bc747b6f8c9029acbcbe6acc4dcabdeb
+spec_changes:
+  - capability: pet-growth-community
+    operation: create
+    source: specs/pet-growth-community/spec.md
+workspace:
+  isolation: current
+  change_branch: main
+  target_branch: main
+  finish: null
+loop:
+  stage: building
+  goal_cycle: 2
+  iteration: 1
+  attempt: 0
+  retry_epoch: 0
+  failed_iteration_count: 0
+  no_progress_count: 0
+  execution_failure_count: 0
+  previous_unresolved_ids: []
+  next_action: submit-builder-candidate
+acceptance:
+  - id: A1
+    source: brief.md
+    text: A1：在未登录的浏览器中打开固定地址，页面正常渲染，显示「爪记 PawLog」名称和明确的「部署成功 / 雏形已上线」状态，不出现白屏或报错。
+    result: pending
+    reason: null
+  - id: A2
+    source: brief.md
+    text: A2：页面展示构建信息（版本号、提交短 SHA、构建时间），且与当前 main 分支最新提交一致，可用于确认线上版本。
+    result: pending
+    reason: null
+  - id: A3
+    source: brief.md
+    text: A3：五个路由入口均可通过底部导航或页面链接访问；直接打开带 hash 的地址（如
+      `/#/health`）以及在该地址刷新时，都能正确渲染对应占位页。
+    result: pending
+    reason: null
+  - id: A4
+    source: brief.md
+    text: A4：构建产物中的 JS/CSS/图标引用为相对路径，在 `/pawlog/` 子路径下加载成功，不出现 404。
+    result: pending
+    reason: null
+  - id: A5
+    source: brief.md
+    text: A5：`npm run build` 与 `npm run lint` 均成功退出；构建结果包含可直接静态托管的 `dist/`。
+    result: pending
+    reason: null
+  - id: A6
+    source: brief.md
+    text: A6：仓库包含 `.github/workflows/deploy.yml`，push 到 `main` 后 GitHub Actions
+      成功完成构建与 Pages 部署；固定地址返回 200。
+    result: pending
+    reason: null
+  - id: A7
+    source: brief.md
+    text: A7：README 记录固定域名、技术栈、目录结构、本地开发、构建、部署方式，以及「新增一个页面/模块」的迭代步骤。
+    result: pending
+    reason: null
+  - id: A8
+    source: brief.md
+    text: A8：在 390px 视口下页面无横向滚动、导航不溢出；桌面端内容居中且最大宽度受限。
+    result: pending
+    reason: null
+builder_handoff: null
+blockers: []
+verification: null
+history:
+  - goal_cycle: 1
+    iteration: 0
+    attempt: 0
+    outcome: recovery
+    unresolved_ids: []
+    summary:
+      text: Native confirmed acceptance criteria changed
+      truncated: false
+    completed_at: 2026-10-19T15:35:35.770Z
+history_overflow:
+  dropped_entries: 0
+  first_dropped_at: null
+  last_dropped_at: null
+  outcome_counts:
+    pass: 0
+    fail: 0
+    blocked: 0
+    execution-error: 0
+    recovery: 0
+verification_result: pending
+verification_report: null
+archived: false
+created_at: 2026-10-19T15:29:34.352Z
