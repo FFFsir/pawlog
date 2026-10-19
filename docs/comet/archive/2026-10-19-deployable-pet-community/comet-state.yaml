@@ -1,0 +1,262 @@
+schema: comet.native.v4
+name: deployable-pet-community
+language: zh-CN
+phase: archive
+status: done
+state_version: 10
+brief: brief.md
+shape_confirmation_hash: a89ea1559bb721c5746bfe37662881c3bc747b6f8c9029acbcbe6acc4dcabdeb
+spec_changes:
+  - capability: pet-growth-community
+    operation: create
+    source: specs/pet-growth-community/spec.md
+workspace:
+  isolation: current
+  change_branch: main
+  target_branch: main
+  finish: null
+loop:
+  stage: done
+  goal_cycle: 2
+  iteration: 1
+  attempt: 1
+  retry_epoch: 0
+  failed_iteration_count: 0
+  no_progress_count: 0
+  execution_failure_count: 0
+  previous_unresolved_ids: []
+  next_action: null
+acceptance:
+  - id: A1
+    source: brief.md
+    text: A1：在未登录的浏览器中打开固定地址，页面正常渲染，显示「爪记 PawLog」名称和明确的「部署成功 / 雏形已上线」状态，不出现白屏或报错。
+    result: passed
+    reason:
+      text: 无登录态全新浏览器打开 https://fffsir.github.io/pawlog/ 返回 200，渲染出 h1「爪记
+        PawLog」及「部署成功，雏形已上线」，root 有内容，无控制台错误与资源加载失败。
+      truncated: false
+  - id: A2
+    source: brief.md
+    text: A2：页面展示构建信息（版本号、提交短 SHA、构建时间），且与当前 main 分支最新提交一致，可用于确认线上版本。
+    result: passed
+    reason:
+      text: 线上显示版本 3.1、提交 135f2e3、构建时间 2026-10-19T16:02:34Z；GitHub main HEAD 为
+        135f2e32...，Actions run 39282363683
+        run_number=3、attempt=1、head_sha=135f2e3，三者一致。
+      truncated: false
+  - id: A3
+    source: brief.md
+    text: A3：五个路由入口均可通过底部导航或页面链接访问；直接打开带 hash 的地址（如
+      `/#/health`）以及在该地址刷新时，都能正确渲染对应占位页。
+    result: passed
+    reason:
+      text: 五个 HashRouter 路由直接加载与 reload
+        后均正确渲染且选中态正确：/、/#/health、/#/community、/#/friends、/#/me，无 404、无失败请求、无 JS
+        异常。
+      truncated: false
+  - id: A4
+    source: brief.md
+    text: A4：构建产物中的 JS/CSS/图标引用为相对路径，在 `/pawlog/` 子路径下加载成功，不出现 404。
+    result: passed
+    reason:
+      text: "vite.config.ts 设置 base: './'；dist/index.html 中 JS/CSS/favicon 均为 ./
+        相对引用；线上 /pawlog/ 的 JS、CSS、favicon.svg、.nojekyll 全部 200。"
+      truncated: false
+  - id: A5
+    source: brief.md
+    text: A5：`npm run build` 与 `npm run lint` 均成功退出；构建结果包含可直接静态托管的 `dist/`。
+    result: passed
+    reason:
+      text: package.json 定义 build=tsc -b && vite build、lint=oxlint，Runtime 记录两者 exit
+        0；dist/ 含 index.html、assets/、favicon.svg、.nojekyll，可静态托管。
+      truncated: false
+  - id: A6
+    source: brief.md
+    text: A6：仓库包含 `.github/workflows/deploy.yml`，push 到 `main` 后 GitHub Actions
+      成功完成构建与 Pages 部署；固定地址返回 200。
+    result: passed
+    reason:
+      text: deploy.yml 已提交至远程 main，配置 push main/workflow_dispatch、npm
+        ci、注入构建变量、build、upload-pages-artifact@v3、deploy-pages@v4、最小权限与
+        github-pages environment；run 39282363683 的 build 与 deploy 均 success，固定地址
+        200。
+      truncated: false
+  - id: A7
+    source: brief.md
+    text: A7：README 记录固定域名、技术栈、目录结构、本地开发、构建、部署方式，以及「新增一个页面/模块」的迭代步骤。
+    result: passed
+    reason:
+      text: README 记录固定地址、技术栈、目录结构、本地开发/构建/preview/lint、Actions 部署与首次 Pages
+        配置，以及新增页面/功能模块/数据层/视觉的迭代步骤；远程 main 与本地一致。
+      truncated: false
+  - id: A8
+    source: brief.md
+    text: A8：在 390px 视口下页面无横向滚动、导航不溢出；桌面端内容居中且最大宽度受限。
+    result: passed
+    reason:
+      text: 390x844 视口实测 clientWidth=scrollWidth=390，无横向滚动，底部导航五项各 74px 无溢出；1280
+        视口内容与导航宽 720px 且居中。
+      truncated: false
+builder_handoff:
+  candidate_id: dd59445a-7d0f-482a-9215-a7f979faaefe
+  identity_provider: skill-coordinated
+  builder_execution_ref: skill-coordinated:builder:7f52d491-85ae-4fbd-947e-974e83df71a1
+  iteration: 1
+  summary:
+    text: 搭建并上线「爪记 PawLog」部署骨架：Vite+React+TS 纯静态 SPA，HashRouter
+      五个路由占位页（成长/健康/社区/宠友/我的），应用壳与底部导航；Vite base 使用相对路径，index.html
+      资源均相对引用；构建期注入版本、提交短 SHA、构建时间并在首页展示；GitHub Actions 工作流在 push main 时构建并发布到
+      GitHub Pages，固定地址 https://fffsir.github.io/pawlog/ 已可公开访问；README
+      记录固定域名、技术栈、目录、本地开发、构建、部署排查和新增页面/模块的迭代步骤。GitHub 平台故障期间曾用 gh-pages
+      分支临时兜底，Actions 恢复后已删除该分支，实际发布链路为 workflow 模式。
+    truncated: false
+  addressed_acceptance_ids:
+    - A1
+    - A2
+    - A3
+    - A4
+    - A5
+    - A6
+    - A7
+    - A8
+  checks:
+    - name:
+        text: npm run lint
+        truncated: false
+      result: passed
+      note:
+        text: oxlint 0 warnings, 0 errors（忽略 .dsh/.zcode/.comet/docs 工具目录）
+        truncated: false
+    - name:
+        text: npm run build
+        truncated: false
+      result: passed
+      note:
+        text: tsc -b && vite build 成功，dist/ 资源引用为 ./assets/...
+        truncated: false
+    - name:
+        text: 本地浏览器验证
+        truncated: false
+      result: passed
+      note:
+        text: 首页渲染、五个 hash 路由切换、#/health 直达与刷新、404 兜底、390px 无横向溢出
+        truncated: false
+    - name:
+        text: 线上链接验证
+        truncated: false
+      result: passed
+      note:
+        text: https://fffsir.github.io/pawlog/ 返回 200；线上 JS/CSS/favicon 均 200；页面显示构建版本
+          3.1、提交 135f2e3
+        truncated: false
+    - name:
+        text: GitHub Actions 部署
+        truncated: false
+      result: passed
+      note:
+        text: run 39282363683 push main 触发，build 与 deploy 均 success，Pages 状态 built
+        truncated: false
+  checks_truncated: false
+  known_limits:
+    - text: 当前仅为部署骨架，不含宠物档案、健康记录、成长时间线、社区动态、同城匹配等产品功能，这些由后续 change 实现。
+      truncated: false
+    - text: GitHub Actions 运行存在 Node 20 action runtime 弃用告警，当前被强制在 Node 24
+        上运行且构建部署成功，后续可升级 action major 版本。
+      truncated: false
+    - text: Pages API 仍返回 source.branch=gh-pages 的陈旧字段，但远程 gh-pages
+        分支已删除，build_type=workflow 且 deployment 来自 main 的 135f2e3，实际发布链路正常。
+      truncated: false
+  known_limits_truncated: false
+  review:
+    status: passed
+    summary:
+      text: 独立只读复核 A1-A8 全部 PASS，无阻断项；线上返回 200，构建信息与 main HEAD 135f2e3 一致，Actions run
+        39282363683 的 build/deploy 均成功，390px 无横向溢出，README 与实现一致。
+      truncated: false
+    reviewer_execution_ref: zcode-explore:209c2d2d-8197-402e-b19a-8bf3b4fdbbf5:deepseek-flash
+  submitted_at: 2026-10-19T16:36:46.360Z
+blockers: []
+verification:
+  candidate_id: dd59445a-7d0f-482a-9215-a7f979faaefe
+  identity_provider: skill-coordinated
+  verifier_execution_ref: skill-coordinated:verifier:af6e04bd-5b5f-4fc6-8356-2d16525260ef
+  iteration: 1
+  attempt: 1
+  assurance: skill-coordinated
+  verdict: pass
+  checks:
+    - id: build
+      name:
+        text: 生产构建
+        truncated: false
+      argv_display:
+        - text: run
+          truncated: false
+        - text: build
+          truncated: false
+      argv_truncated: false
+      cwd_ref: .
+      status: passed
+      exit_code: 0
+      duration_ms: 1029
+    - id: lint
+      name:
+        text: 静态检查
+        truncated: false
+      argv_display:
+        - text: run
+          truncated: false
+        - text: lint
+          truncated: false
+      argv_truncated: false
+      cwd_ref: .
+      status: passed
+      exit_code: 0
+      duration_ms: 633
+  summary:
+    text: A1–A8 全部通过：公开地址正常渲染并显示部署成功；线上构建信息 3.1 / 135f2e3 / 2026-10-19T16:02:34Z 与
+      main 最新提交及成功的 Actions 部署一致；五个 HashRouter 路由直达与刷新正常；相对路径资源无 404；build/lint
+      链路完备；README 与 390px/桌面响应式均满足规格。
+    truncated: false
+  risks:
+    - text: 线上构建版本号采用 Actions 的 run_number.run_attempt（3.1）而非语义化版本，属于构建期注入的预期行为。
+      truncated: false
+    - text: 本地 dist/ 为 dev-local 构建且被 .gitignore 忽略，线上由 Actions 产物部署，资源哈希不同属预期。
+      truncated: false
+  risks_truncated: false
+  completed_at: 2026-10-19T16:39:53.515Z
+history:
+  - goal_cycle: 1
+    iteration: 0
+    attempt: 0
+    outcome: recovery
+    unresolved_ids: []
+    summary:
+      text: Native confirmed acceptance criteria changed
+      truncated: false
+    completed_at: 2026-10-19T15:35:35.770Z
+  - goal_cycle: 2
+    iteration: 1
+    attempt: 1
+    outcome: pass
+    unresolved_ids: []
+    summary:
+      text: A1–A8 全部通过：公开地址正常渲染并显示部署成功；线上构建信息 3.1 / 135f2e3 / 2026-10-19T16:02:34Z 与
+        main 最新提交及成功的 Actions 部署一致；五个 HashRouter 路由直达与刷新正常；相对路径资源无
+        404；build/lint 链路完备；README 与 390px/桌面响应式均满足规格。
+      truncated: false
+    completed_at: 2026-10-19T16:39:53.515Z
+history_overflow:
+  dropped_entries: 0
+  first_dropped_at: null
+  last_dropped_at: null
+  outcome_counts:
+    pass: 0
+    fail: 0
+    blocked: 0
+    execution-error: 0
+    recovery: 0
+verification_result: pass
+verification_report: verification.md
+archived: true
+created_at: 2026-10-19T15:29:34.352Z
