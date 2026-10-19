@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "description": "爪记 PawLog —— 养宠成长记录与同城宠友社区",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

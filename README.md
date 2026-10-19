@@ -60,7 +60,7 @@
 
 ## 本地开发
 
-要求 Node.js 20 及以上。
+要求 Node.js 20.19 及以上或 22.12 及以上（Vite 8 的运行要求）。
 
 ```bash
 npm install
